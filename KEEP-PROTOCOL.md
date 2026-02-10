@@ -22,6 +22,11 @@
 10. [Implementation](#10-implementation)
 11. [Future Work](#11-future-work)
 12. [Appendix](#12-appendix)
+    - [A. JSON Schema](#a-json-schema)
+    - [B. Example File](#b-example-file)
+    - [C. THAP Canonical Field Reference](#c-thap-canonical-field-reference)
+    - [D. Glossary](#d-glossary)
+    - [E. Minimum Viable KEEP (MVK) Tiers](#e-minimum-viable-keep-mvk-tiers)
 
 ---
 
@@ -633,6 +638,66 @@ continuity.checkin_frequency
 | **RUFADAA** | Revised Uniform Fiduciary Access to Digital Assets Act |
 | **Output Descriptor** | A BIP-380 string describing a wallet's script and key derivation |
 | **Drift** | Divergence between documented custody arrangement and actual state |
+
+### E. Minimum Viable KEEP (MVK) Tiers
+
+Not everyone needs all 19 required fields filled out meaningfully on day one. MVK defines progressive adoption tiers so people can start small and grow their custody governance over time.
+
+#### Level 1: Emergency Recovery (The Bare Minimum)
+
+The absolute minimum to prevent total loss if the holder is hit by a bus tomorrow.
+
+**Required fields that must have real data (not just defaults):**
+- `family_name`
+- `wallets` (at least 1 with `threshold`/`total_keys`)
+- `keyholders` (at least 1 with `name`/`role`/`storage_type`/`location`)
+- `heirs` (at least 1 with `name`/`relationship`)
+- `legal.has_letter_of_instruction = true` (or `has_trust`/`has_will`)
+
+This gets you from "my family has zero idea" to "someone can figure out what exists and where."
+
+**Approximate KEEP Score at this level:** ~25-35
+
+#### Level 2: Governed Custody (Operational Readiness)
+
+The setup is documented, tested, and professionally supported.
+
+**Everything in Level 1, plus:**
+- `governance_rules` (at least 1 active rule)
+- `redundancy` with `passes_3_3_3_rule` checked (even if false — you've assessed it)
+- `charter` with `mission` defined
+- `legal` with `jurisdiction` and `bitcoin_in_docs`
+- `drills` (at least 1 completed)
+- `professionals` (at least 1 contact: advisor OR attorney)
+- `continuity` with frequencies set
+
+This is where most serious holders should aim. Your setup is documented, you've tested it, and at least one professional knows it exists.
+
+**Approximate KEEP Score at this level:** ~55-70
+
+#### Level 3: Institutional Grade (Full KEEP Compliance)
+
+All pillars fully configured, actively maintained, professionally coordinated.
+
+**Everything in Level 2, plus:**
+- `passes_3_3_3_rule = true`
+- All 3 professional slots filled
+- `education.heirs_trained = true`
+- `charter` with `principles` and review completed
+- `legal` with RUFADAA filed, trust established
+- Multiple drill types completed
+- THAP history with 2+ entries (proving ongoing review)
+
+**Approximate KEEP Score at this level:** ~85-100
+
+---
+
+**Implementation Note:** Implementations MAY surface MVK level as a user-facing indicator alongside the KEEP Score. The levels are advisory, not enforced by the schema — all fields remain technically required to maintain forward compatibility.
+
+**Example file mappings:**
+- `solo-holder.keep` → Level 1 (score: 38)
+- `nakamoto-family.keep` → Level 2 (score: 72)
+- `corporate-treasury.keep` → Level 3 (score: 89)
 
 ---
 

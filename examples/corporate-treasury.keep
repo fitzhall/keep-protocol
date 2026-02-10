@@ -1,0 +1,372 @@
+{
+  "version": "2.0.0",
+  "created_at": "2025-01-15T14:30:00Z",
+  "last_modified": "2026-02-10T09:00:00Z",
+  "file_hash": "a7f3c8e9d2b1f6a4e8c7d9b2f1a3e5c7d8b4f2a6e9c1d7b3f5a8e2c9d4b6f1a3",
+  "family_name": "Meridian Technologies Inc.",
+  "wallets": [
+    {
+      "id": "wallet-operating",
+      "descriptor": "wsh(sortedmulti(2,[abc12345/48'/0'/0'/2']xpub6E...[def67890/48'/0'/0'/2']xpub6F...[ghi34567/48'/0'/0'/2']xpub6G...))",
+      "threshold": 2,
+      "total_keys": 3,
+      "created_at": "2024-06-01T10:00:00Z",
+      "label": "Operating Fund",
+      "platform": "Unchained",
+      "balance_sats": 150000000
+    },
+    {
+      "id": "wallet-strategic",
+      "descriptor": "wsh(sortedmulti(3,[jkl98765/48'/0'/0'/2']xpub6H...[mno45678/48'/0'/0'/2']xpub6I...[pqr12389/48'/0'/0'/2']xpub6J...[stu56734/48'/0'/0'/2']xpub6K...[vwx90123/48'/0'/0'/2']xpub6L...))",
+      "threshold": 3,
+      "total_keys": 5,
+      "created_at": "2024-06-15T14:30:00Z",
+      "label": "Strategic Reserve",
+      "platform": "Nunchuk",
+      "balance_sats": 2500000000
+    }
+  ],
+  "keyholders": [
+    {
+      "id": "kh-sarah-park",
+      "role": "primary",
+      "name": "Sarah Park",
+      "jurisdiction": "Texas",
+      "storage_type": "hardware-wallet",
+      "location": "CEO office safe, Austin TX",
+      "key_age_days": 254,
+      "is_sharded": false,
+      "contact": {
+        "email": "spark@meridiantech.example",
+        "phone": "+1-512-555-0101"
+      },
+      "last_verified": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "kh-james-liu",
+      "role": "custodian",
+      "name": "James Liu",
+      "jurisdiction": "Texas",
+      "storage_type": "hardware-wallet",
+      "location": "CFO office safe, Austin TX",
+      "key_age_days": 254,
+      "is_sharded": false,
+      "contact": {
+        "email": "jliu@meridiantech.example",
+        "phone": "+1-512-555-0102"
+      },
+      "last_verified": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "kh-elena-vasquez",
+      "role": "other",
+      "name": "Elena Vasquez",
+      "jurisdiction": "New York",
+      "storage_type": "vault",
+      "location": "Bank safe deposit box, New York NY",
+      "key_age_days": 254,
+      "is_sharded": false,
+      "contact": {
+        "email": "evasquez@meridiantech.example",
+        "phone": "+1-212-555-0201"
+      },
+      "last_verified": "2026-01-20T11:30:00Z"
+    },
+    {
+      "id": "kh-anchorage",
+      "role": "custodian",
+      "name": "Anchorage Digital",
+      "jurisdiction": "Delaware",
+      "storage_type": "custodian",
+      "location": "Institutional custody vault, Wilmington DE",
+      "key_age_days": 254,
+      "is_sharded": false,
+      "contact": {
+        "email": "custody@anchorage.example",
+        "phone": "+1-302-555-0301"
+      },
+      "last_verified": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "kh-michael-torres",
+      "role": "attorney",
+      "name": "Michael Torres",
+      "jurisdiction": "Texas",
+      "storage_type": "vault",
+      "location": "Torres & Associates law firm vault, Dallas TX",
+      "key_age_days": 254,
+      "is_sharded": false,
+      "contact": {
+        "email": "mtorres@torreslaw.example",
+        "phone": "+1-214-555-0401"
+      },
+      "last_verified": "2026-01-10T15:00:00Z"
+    }
+  ],
+  "governance_rules": [
+    {
+      "id": "rule-daily-limit",
+      "who": "Operating Fund signers (2-of-3)",
+      "canDo": "Authorize transactions up to $100,000",
+      "when": "During normal business operations",
+      "condition": "Within daily operational spending limit",
+      "status": "active",
+      "risk": "low",
+      "lastExecuted": "2026-02-08T14:20:00Z",
+      "executions": 47
+    },
+    {
+      "id": "rule-board-approval",
+      "who": "Board of Directors",
+      "canDo": "Approve transfers exceeding $500,000 or movement from Strategic Reserve",
+      "when": "Via board resolution",
+      "condition": "Requires formal board vote and CFO countersignature",
+      "status": "active",
+      "risk": "medium",
+      "lastExecuted": "2025-12-10T16:00:00Z",
+      "executions": 3
+    },
+    {
+      "id": "rule-emergency-freeze",
+      "who": "CEO or CFO",
+      "canDo": "Freeze all wallet operations",
+      "when": "Emergency situations (security breach, regulatory inquiry)",
+      "condition": "Notify full board within 24 hours",
+      "status": "active",
+      "risk": "high",
+      "executions": 0
+    }
+  ],
+  "redundancy": {
+    "device_count": 5,
+    "location_count": 4,
+    "person_count": 5,
+    "geographic_distribution": [
+      "Austin, TX",
+      "New York, NY",
+      "Wilmington, DE",
+      "Dallas, TX"
+    ],
+    "passes_3_3_3_rule": true
+  },
+  "heirs": [
+    {
+      "id": "heir-operating",
+      "name": "Meridian Technologies Operating Account",
+      "relationship": "corporate account",
+      "allocation": 60,
+      "isKeyHolder": false
+    },
+    {
+      "id": "heir-trust",
+      "name": "Meridian Strategic Reserve Trust",
+      "relationship": "corporate trust",
+      "allocation": 40,
+      "isKeyHolder": false
+    }
+  ],
+  "charter": {
+    "mission": "Meridian Technologies holds Bitcoin as a strategic treasury asset to preserve shareholder value, maintain purchasing power, and demonstrate fiduciary responsibility in accordance with GAAP, SOX, and corporate governance best practices.",
+    "principles": [
+      "Fiduciary duty to shareholders requires institutional-grade custody standards",
+      "Multi-signature governance prevents single points of failure",
+      "Regular audits and drills ensure operational readiness",
+      "Compliance with SOX internal controls and SEC disclosure requirements"
+    ],
+    "reviewFrequency": "quarterly",
+    "lastReviewed": "2025-12-15T13:00:00Z"
+  },
+  "legal": {
+    "has_will": false,
+    "has_trust": true,
+    "has_letter_of_instruction": true,
+    "trust_name": "Meridian Digital Asset Trust",
+    "jurisdiction": "Texas",
+    "bitcoin_in_docs": true,
+    "rufadaa_filed": true,
+    "trustee_names": [
+      "Sarah Park",
+      "Elena Vasquez",
+      "Michael Torres"
+    ],
+    "last_review": "2025-11-20T10:00:00Z",
+    "next_review": "2026-05-20T10:00:00Z",
+    "attorney_contact": {
+      "name": "Michael Torres",
+      "firm": "Torres & Associates LLP",
+      "phone": "+1-214-555-0401",
+      "email": "mtorres@torreslaw.example"
+    }
+  },
+  "drills": [
+    {
+      "id": "drill-recovery-2025-09",
+      "timestamp": "2025-09-15T10:00:00Z",
+      "type": "recovery",
+      "participants": [
+        "Sarah Park",
+        "James Liu",
+        "Elena Vasquez"
+      ],
+      "success": true,
+      "duration_minutes": 45,
+      "notes": "Successfully recovered test wallet using 3 of 5 keys from Strategic Reserve configuration. All participants accessed keys within SLA.",
+      "issues_found": []
+    },
+    {
+      "id": "drill-signing-2025-11",
+      "timestamp": "2025-11-20T14:30:00Z",
+      "type": "signing",
+      "participants": [
+        "Sarah Park",
+        "James Liu"
+      ],
+      "success": true,
+      "duration_minutes": 22,
+      "notes": "Signed test transaction from Operating Fund using 2-of-3 multisig. Process completed within policy timeframe.",
+      "issues_found": []
+    }
+  ],
+  "continuity": {
+    "checkin_frequency": "monthly",
+    "drill_frequency": "quarterly",
+    "last_checkin": "2026-01-15T09:00:00Z",
+    "next_checkin_due": "2026-03-15T09:00:00Z",
+    "last_drill": "2025-11-20T14:30:00Z",
+    "next_drill_due": "2026-02-20T10:00:00Z",
+    "life_event_triggers": [
+      "C-suite departure",
+      "Board resolution",
+      "Regulatory change",
+      "Material security incident",
+      "Custody platform change"
+    ],
+    "notification_days": 7
+  },
+  "rotations": [
+    {
+      "id": "rotation-2025-q4",
+      "timestamp": "2025-12-01T10:00:00Z",
+      "keys_rotated": [
+        "kh-sarah-park",
+        "kh-james-liu",
+        "kh-elena-vasquez",
+        "kh-anchorage",
+        "kh-michael-torres"
+      ],
+      "reason": "Scheduled quarterly rotation per corporate security policy"
+    }
+  ],
+  "professionals": {
+    "advisor": {
+      "name": "Jennifer Chen",
+      "firm": "Bitcoin Treasury Advisors",
+      "email": "jchen@btctreasury.example",
+      "phone": "+1-415-555-0501"
+    },
+    "attorney": {
+      "name": "Michael Torres",
+      "firm": "Torres & Associates LLP",
+      "email": "mtorres@torreslaw.example",
+      "phone": "+1-214-555-0401"
+    },
+    "cpa": {
+      "name": "David Nguyen",
+      "firm": "Meridian Corporate Accounting",
+      "email": "dnguyen@meridiantech.example",
+      "phone": "+1-512-555-0601"
+    }
+  },
+  "education": {
+    "heirs_trained": true,
+    "last_training": "2025-11-15T13:00:00Z",
+    "next_review": "2026-05-15T13:00:00Z",
+    "training_materials_location": "Corporate SharePoint - Board Training Materials - Bitcoin Treasury",
+    "trained_heirs": [
+      "Board Member: Elena Vasquez",
+      "Board Member: Robert Kim",
+      "Board Member: Alexandra Martinez"
+    ]
+  },
+  "keep_score": {
+    "value": 89,
+    "calculated_at": "2026-02-10T09:00:00Z",
+    "components": {
+      "security": 95,
+      "redundancy": 92,
+      "liveness": 85,
+      "legal_readiness": 90,
+      "education": 80
+    },
+    "trend": "stable",
+    "recommendations": [
+      "Schedule next board training session",
+      "Review insurance coverage for digital assets"
+    ]
+  },
+  "thap": {
+    "current_hash": "d4e7f2a9b8c3d6e1f5a7b2c8d9e4f1a6b3c7d2e8f4a1b5c9d3e7f2a6b8c4d1e5",
+    "history": [
+      {
+        "hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "timestamp": "2025-01-15T14:30:00Z",
+        "note": "Initial file creation"
+      },
+      {
+        "hash": "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+        "timestamp": "2025-12-01T10:00:00Z",
+        "note": "Quarterly key rotation completed"
+      },
+      {
+        "hash": "d4e7f2a9b8c3d6e1f5a7b2c8d9e4f1a6b3c7d2e8f4a1b5c9d3e7f2a6b8c4d1e5",
+        "timestamp": "2026-02-10T09:00:00Z",
+        "note": "Updated KEEP score and drill records"
+      }
+    ]
+  },
+  "event_log": [
+    {
+      "id": "event-001",
+      "timestamp": "2025-01-15T14:30:00Z",
+      "event_type": "file_created",
+      "description": "Corporate treasury .keep file created for Meridian Technologies Inc.",
+      "actor": "Sarah Park (CEO)",
+      "metadata": {
+        "initial_setup": true,
+        "board_approved": "2025-01-10"
+      }
+    },
+    {
+      "id": "event-002",
+      "timestamp": "2025-06-01T10:00:00Z",
+      "event_type": "vault_configured",
+      "description": "Operating Fund wallet configured on Unchained (2-of-3 multisig)",
+      "actor": "James Liu (CFO)",
+      "hash": "5f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8"
+    },
+    {
+      "id": "event-003",
+      "timestamp": "2025-06-15T14:30:00Z",
+      "event_type": "vault_configured",
+      "description": "Strategic Reserve wallet configured on Nunchuk (3-of-5 multisig)",
+      "actor": "James Liu (CFO)",
+      "hash": "7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9"
+    },
+    {
+      "id": "event-004",
+      "timestamp": "2025-09-15T10:00:00Z",
+      "event_type": "drill_completed",
+      "description": "Recovery drill completed successfully with 3 participants",
+      "actor": "Sarah Park (CEO)",
+      "hash": "9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1"
+    },
+    {
+      "id": "event-005",
+      "timestamp": "2025-12-01T10:00:00Z",
+      "event_type": "key_rotation",
+      "description": "Quarterly key rotation completed for all 5 keyholders",
+      "actor": "James Liu (CFO)",
+      "hash": "1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3"
+    }
+  ]
+}

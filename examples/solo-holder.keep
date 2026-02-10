@@ -1,0 +1,128 @@
+{
+  "version": "2.0.0",
+  "created_at": "2026-02-10T10:00:00.000Z",
+  "last_modified": "2026-02-10T10:00:00.000Z",
+  "family_name": "Solo Hodler",
+  "wallets": [
+    {
+      "id": "wallet-001",
+      "descriptor": "wpkh([a1b2c3d4/84'/0'/0']xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsApME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt)",
+      "threshold": 1,
+      "total_keys": 1,
+      "created_at": "2026-01-15T08:30:00.000Z",
+      "label": "Cold Storage",
+      "platform": "Coldcard"
+    }
+  ],
+  "keyholders": [
+    {
+      "id": "kh-001",
+      "role": "primary",
+      "name": "Alex Chen",
+      "jurisdiction": "California",
+      "storage_type": "hardware-wallet",
+      "location": "Home safe",
+      "key_age_days": 26,
+      "is_sharded": false
+    }
+  ],
+  "governance_rules": [],
+  "redundancy": {
+    "device_count": 1,
+    "location_count": 1,
+    "person_count": 1,
+    "geographic_distribution": [
+      "California"
+    ],
+    "passes_3_3_3_rule": false
+  },
+  "heirs": [
+    {
+      "id": "heir-001",
+      "name": "Jordan Chen",
+      "relationship": "spouse",
+      "allocation": 100,
+      "isKeyHolder": false,
+      "contact": {
+        "email": "jordan.chen@example.com",
+        "phone": "+1-555-0123"
+      }
+    }
+  ],
+  "charter": {
+    "mission": "Preserve Bitcoin wealth for long-term family security and financial sovereignty",
+    "principles": [
+      "Security through simplicity and careful key management",
+      "Annual review of custody practices and estate planning"
+    ],
+    "reviewFrequency": "annual"
+  },
+  "legal": {
+    "has_will": true,
+    "has_trust": false,
+    "has_letter_of_instruction": true,
+    "jurisdiction": "California",
+    "bitcoin_in_docs": false,
+    "rufadaa_filed": false,
+    "last_review": "2026-01-20T14:00:00.000Z",
+    "next_review": "2027-01-20T14:00:00.000Z"
+  },
+  "drills": [],
+  "continuity": {
+    "checkin_frequency": "annual",
+    "drill_frequency": "annual"
+  },
+  "rotations": [],
+  "professionals": {
+    "advisor": {
+      "name": "Sam Rodriguez",
+      "firm": "Bitcoin Wealth Advisors",
+      "email": "sam@btcwealth.com",
+      "phone": "+1-555-0199"
+    }
+  },
+  "education": {
+    "heirs_trained": false,
+    "last_training": "2026-02-01T10:00:00.000Z",
+    "next_review": "2026-08-01T10:00:00.000Z",
+    "trained_heirs": []
+  },
+  "keep_score": {
+    "value": 38,
+    "calculated_at": "2026-02-10T10:00:00.000Z",
+    "components": {
+      "security": 60,
+      "redundancy": 15,
+      "liveness": 10,
+      "legal_readiness": 45,
+      "education": 10
+    },
+    "trend": "stable",
+    "recommendations": [
+      "Add backup signing device",
+      "File RUFADAA authorization",
+      "Run first recovery drill",
+      "Designate an attorney"
+    ]
+  },
+  "thap": {
+    "current_hash": "a3f7d9c2e8b1f4a6d9e2c5b8a1f7d3c9e6b2f8a4d7c1e9b5f2a8d4c7e1b9f6a3",
+    "history": [
+      {
+        "hash": "a3f7d9c2e8b1f4a6d9e2c5b8a1f7d3c9e6b2f8a4d7c1e9b5f2a8d4c7e1b9f6a3",
+        "timestamp": "2026-02-10T10:00:00.000Z",
+        "note": "Initial file creation"
+      }
+    ]
+  },
+  "event_log": [
+    {
+      "id": "event-001",
+      "timestamp": "2026-02-10T10:00:00.000Z",
+      "event_type": "file_created",
+      "description": "Solo holder custody file initialized",
+      "actor": "Alex Chen",
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}
