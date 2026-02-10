@@ -71,6 +71,6 @@ Redundancy metrics surface dangerous concentration: all devices in one location,
 
 ## Responsible Disclosure
 
-If you discover a vulnerability in the KEEP Protocol specification or the reference implementation (Keep Nexus), please email **security@bitcoincommand.com** with details. For non-sensitive issues, open a GitHub issue at the appropriate repository.
+If you discover a vulnerability in the KEEP Protocol specification or the reference implementation (Keep Nexus), please email **security@selfcustodyos.com** with details. For non-sensitive issues, open a GitHub issue at the appropriate repository.
 
 We request 90 days for coordinated disclosure to allow time for fixes and user notification.
