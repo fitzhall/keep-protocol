@@ -1,0 +1,302 @@
+{
+  "version": "2.0.0",
+  "created_at": "2025-11-15T09:00:00.000Z",
+  "last_modified": "2026-01-20T14:32:00.000Z",
+  "family_name": "Nakamoto Family",
+
+  "wallets": [
+    {
+      "id": "wallet-primary-vault",
+      "descriptor": "wsh(sortedmulti(2,[abc12345/48h/0h/0h/2h]xpub...,[def67890/48h/0h/0h/2h]xpub...,[ghi24680/48h/0h/0h/2h]xpub...))",
+      "threshold": 2,
+      "total_keys": 3,
+      "created_at": "2025-11-15T09:30:00.000Z",
+      "label": "Primary Vault",
+      "platform": "Theya"
+    },
+    {
+      "id": "wallet-savings",
+      "descriptor": "wsh(sortedmulti(3,[aaa11111/48h/0h/0h/2h]xpub...,[bbb22222/48h/0h/0h/2h]xpub...,[ccc33333/48h/0h/0h/2h]xpub...,[ddd44444/48h/0h/0h/2h]xpub...,[eee55555/48h/0h/0h/2h]xpub...))",
+      "threshold": 3,
+      "total_keys": 5,
+      "created_at": "2025-12-01T10:00:00.000Z",
+      "label": "Long-Term Savings",
+      "platform": "Unchained"
+    }
+  ],
+
+  "keyholders": [
+    {
+      "id": "kh-satoshi",
+      "role": "primary",
+      "name": "Satoshi Nakamoto",
+      "jurisdiction": "Wyoming",
+      "storage_type": "hardware-wallet",
+      "location": "Home safe, Cheyenne, WY",
+      "key_age_days": 432,
+      "is_sharded": false,
+      "contact": {
+        "email": "satoshi@example.com",
+        "phone": "+1-555-0101"
+      },
+      "last_verified": "2026-01-10T08:00:00.000Z"
+    },
+    {
+      "id": "kh-hal",
+      "role": "spouse",
+      "name": "Hal Nakamoto",
+      "jurisdiction": "Wyoming",
+      "storage_type": "hardware-wallet",
+      "location": "Home safe, Cheyenne, WY",
+      "key_age_days": 432,
+      "is_sharded": false,
+      "contact": {
+        "email": "hal@example.com",
+        "phone": "+1-555-0102"
+      },
+      "last_verified": "2026-01-10T08:00:00.000Z"
+    },
+    {
+      "id": "kh-nick",
+      "role": "attorney",
+      "name": "Nick Finney",
+      "jurisdiction": "Wyoming",
+      "storage_type": "vault",
+      "location": "Bank vault, First National, Cheyenne, WY",
+      "key_age_days": 380,
+      "is_sharded": false,
+      "contact": {
+        "email": "nick.finney@example-law.com",
+        "phone": "+1-555-0200"
+      },
+      "last_verified": "2025-12-15T10:00:00.000Z"
+    }
+  ],
+
+  "governance_rules": [
+    {
+      "id": "rule-spending-limit",
+      "who": "Satoshi Nakamoto",
+      "canDo": "Initiate transactions up to 0.5 BTC",
+      "when": "Any time",
+      "condition": "Single-signature authorization from primary vault",
+      "status": "active",
+      "risk": "low",
+      "executions": 12
+    },
+    {
+      "id": "rule-large-withdrawal",
+      "who": "Any two keyholders",
+      "canDo": "Authorize transactions above 0.5 BTC",
+      "when": "With 48-hour cooling period",
+      "condition": "Requires 2-of-3 multisig approval plus notification to all keyholders",
+      "status": "active",
+      "risk": "medium",
+      "executions": 3
+    }
+  ],
+
+  "redundancy": {
+    "device_count": 3,
+    "location_count": 2,
+    "person_count": 3,
+    "geographic_distribution": [
+      "Cheyenne, WY"
+    ],
+    "passes_3_3_3_rule": false
+  },
+
+  "heirs": [
+    {
+      "id": "heir-hal",
+      "name": "Hal Nakamoto",
+      "relationship": "Spouse",
+      "allocation": 60,
+      "isKeyHolder": true,
+      "contact": {
+        "email": "hal@example.com",
+        "phone": "+1-555-0102"
+      }
+    },
+    {
+      "id": "heir-trust",
+      "name": "Nakamoto Family Trust",
+      "relationship": "Trust",
+      "allocation": 40,
+      "isKeyHolder": false
+    }
+  ],
+
+  "charter": {
+    "mission": "Preserve and grow the family's Bitcoin holdings across generations through disciplined custody, transparent governance, and ongoing education.",
+    "principles": [
+      "Self-custody is non-negotiable: we hold our own keys.",
+      "No single point of failure: every critical operation requires multiple participants.",
+      "Transparency with privacy: all family stakeholders understand the governance structure without exposing sensitive key material."
+    ],
+    "reviewFrequency": "annual",
+    "lastReviewed": "2026-01-01T00:00:00.000Z"
+  },
+
+  "legal": {
+    "has_will": true,
+    "has_trust": true,
+    "has_letter_of_instruction": true,
+    "trust_name": "Nakamoto Bitcoin Trust",
+    "jurisdiction": "Wyoming",
+    "bitcoin_in_docs": true,
+    "rufadaa_filed": true,
+    "trustee_names": [
+      "Satoshi Nakamoto",
+      "Nick Finney"
+    ],
+    "last_review": "2026-01-01T00:00:00.000Z",
+    "next_review": "2027-01-01T00:00:00.000Z",
+    "attorney_contact": {
+      "name": "Nick Finney",
+      "firm": "Finney & Associates",
+      "phone": "+1-555-0200",
+      "email": "nick.finney@example-law.com"
+    }
+  },
+
+  "drills": [
+    {
+      "id": "drill-001",
+      "timestamp": "2026-01-10T14:00:00.000Z",
+      "type": "recovery",
+      "participants": [
+        "Satoshi Nakamoto",
+        "Hal Nakamoto"
+      ],
+      "success": true,
+      "duration_minutes": 45,
+      "notes": "Successfully recovered primary vault using 2-of-3 signing. All hardware wallets functional.",
+      "issues_found": [
+        "Hal needed a firmware update before signing"
+      ]
+    }
+  ],
+
+  "continuity": {
+    "checkin_frequency": "quarterly",
+    "drill_frequency": "quarterly",
+    "last_checkin": "2026-01-10T08:00:00.000Z",
+    "next_checkin_due": "2026-04-10T08:00:00.000Z",
+    "last_drill": "2026-01-10T14:00:00.000Z",
+    "next_drill_due": "2026-04-10T14:00:00.000Z",
+    "life_event_triggers": [
+      "Marriage or divorce",
+      "Birth of child",
+      "Death of keyholder",
+      "Relocation to new jurisdiction"
+    ],
+    "notification_days": 14
+  },
+
+  "rotations": [],
+
+  "professionals": {
+    "advisor": {
+      "name": "Wei Dai",
+      "firm": "Digital Asset Advisors",
+      "email": "wei@example-advisors.com",
+      "phone": "+1-555-0300"
+    },
+    "attorney": {
+      "name": "Nick Finney",
+      "firm": "Finney & Associates",
+      "email": "nick.finney@example-law.com",
+      "phone": "+1-555-0200"
+    },
+    "cpa": {
+      "name": "Adam Ledger",
+      "firm": "Ledger Tax Group",
+      "email": "adam@example-tax.com",
+      "phone": "+1-555-0400"
+    }
+  },
+
+  "education": {
+    "heirs_trained": false,
+    "last_training": "2025-11-15T09:00:00.000Z",
+    "next_review": "2026-06-01T00:00:00.000Z",
+    "training_materials_location": "Family NAS, /documents/bitcoin-education/",
+    "trained_heirs": []
+  },
+
+  "keep_score": {
+    "value": 72,
+    "calculated_at": "2026-01-20T14:32:00.000Z",
+    "components": {
+      "security": 85,
+      "redundancy": 55,
+      "liveness": 80,
+      "legal_readiness": 90,
+      "education": 30
+    },
+    "trend": "improving",
+    "recommendations": [
+      "Add a third geographic location to meet the 3-3-3 rule",
+      "Complete heir education program for Hal Nakamoto",
+      "Schedule a signing drill to diversify drill types"
+    ]
+  },
+
+  "thap": {
+    "current_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    "history": [
+      {
+        "hash": "f0e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1",
+        "timestamp": "2025-11-15T09:00:00.000Z",
+        "note": "Initial file creation"
+      },
+      {
+        "hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "timestamp": "2025-12-01T10:00:00.000Z",
+        "note": "Added savings wallet and updated governance rules"
+      }
+    ]
+  },
+
+  "event_log": [
+    {
+      "id": "evt-001",
+      "timestamp": "2025-11-15T09:00:00.000Z",
+      "event_type": "file_created",
+      "description": "KEEP file created for Nakamoto Family",
+      "actor": "Satoshi Nakamoto",
+      "metadata": {
+        "version": "2.0.0",
+        "source": "Keep Nexus"
+      },
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "evt-002",
+      "timestamp": "2025-12-01T10:00:00.000Z",
+      "event_type": "vault_configured",
+      "description": "Added Long-Term Savings wallet (3-of-5) on Unchained",
+      "actor": "Satoshi Nakamoto",
+      "metadata": {
+        "wallet_id": "wallet-savings",
+        "platform": "Unchained"
+      },
+      "hash": "b3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4"
+    },
+    {
+      "id": "evt-003",
+      "timestamp": "2026-01-10T14:45:00.000Z",
+      "event_type": "drill_completed",
+      "description": "Recovery drill completed successfully with 2-of-3 signing",
+      "actor": "Satoshi Nakamoto",
+      "metadata": {
+        "drill_id": "drill-001",
+        "drill_type": "recovery",
+        "success": true,
+        "duration_minutes": 45
+      },
+      "hash": "c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5"
+    }
+  ]
+}

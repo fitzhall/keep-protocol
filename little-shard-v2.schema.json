@@ -1,0 +1,901 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://keepstandard.org/schema/little-shard-v2.schema.json",
+  "title": "Little Shard File v2.0",
+  "description": "JSON Schema for the .keep file format — the portable single source of truth for Bitcoin custody governance under the KEEP framework.",
+  "type": "object",
+  "required": [
+    "version",
+    "created_at",
+    "last_modified",
+    "family_name",
+    "wallets",
+    "keyholders",
+    "governance_rules",
+    "redundancy",
+    "heirs",
+    "charter",
+    "legal",
+    "drills",
+    "continuity",
+    "rotations",
+    "professionals",
+    "education",
+    "keep_score",
+    "thap",
+    "event_log"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "File format version (e.g. \"2.0.0\")",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of file creation"
+    },
+    "last_modified": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last modification"
+    },
+    "file_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of file contents for integrity verification"
+    },
+    "family_name": {
+      "type": "string",
+      "description": "Name of the family or entity this .keep file represents"
+    },
+    "wallets": {
+      "type": "array",
+      "description": "Bitcoin wallets under governance",
+      "items": { "$ref": "#/$defs/Wallet" }
+    },
+    "keyholders": {
+      "type": "array",
+      "description": "Individuals who hold keys or key shards",
+      "items": { "$ref": "#/$defs/KeyHolder" }
+    },
+    "governance_rules": {
+      "type": "array",
+      "description": "Rules governing key usage and custody operations",
+      "items": { "$ref": "#/$defs/GovernanceRule" }
+    },
+    "redundancy": {
+      "$ref": "#/$defs/RedundancyMetrics",
+      "description": "Device, location, and person distribution metrics"
+    },
+    "heirs": {
+      "type": "array",
+      "description": "Designated heirs and their allocations",
+      "items": { "$ref": "#/$defs/Heir" }
+    },
+    "charter": {
+      "$ref": "#/$defs/Charter",
+      "description": "Family Bitcoin charter — mission, principles, review cadence"
+    },
+    "legal": {
+      "$ref": "#/$defs/LegalDocuments",
+      "description": "Legal document status and attorney contact information"
+    },
+    "drills": {
+      "type": "array",
+      "description": "Recovery and signing drill history",
+      "items": { "$ref": "#/$defs/Drill" }
+    },
+    "continuity": {
+      "$ref": "#/$defs/ContinuityConfig",
+      "description": "Check-in and drill scheduling configuration"
+    },
+    "rotations": {
+      "type": "array",
+      "description": "Key rotation history",
+      "items": { "$ref": "#/$defs/KeyRotation" }
+    },
+    "professionals": {
+      "$ref": "#/$defs/ProfessionalNetwork",
+      "description": "Professional contacts (advisor, attorney, CPA)"
+    },
+    "education": {
+      "$ref": "#/$defs/EducationStatus",
+      "description": "Heir education and training status"
+    },
+    "keep_score": {
+      "$ref": "#/$defs/KEEPScore",
+      "description": "Overall KEEP governance score with component breakdown"
+    },
+    "thap": {
+      "$ref": "#/$defs/ThapIntegrity",
+      "description": "Trust Hash Amendment Protocol — drift detection via SHA-256"
+    },
+    "event_log": {
+      "type": "array",
+      "description": "Append-only, hash-chained audit trail",
+      "items": { "$ref": "#/$defs/EventLogEntry" }
+    },
+    "risk_analysis": {
+      "$ref": "#/$defs/RiskAnalysis",
+      "description": "Optional computed risk analysis with scenario results"
+    }
+  },
+  "$defs": {
+    "KeyRole": {
+      "type": "string",
+      "enum": ["primary", "spouse", "child", "attorney", "custodian", "friend", "other"],
+      "description": "Role of a keyholder in the custody structure"
+    },
+    "StorageType": {
+      "type": "string",
+      "enum": ["hardware-wallet", "paper", "vault", "digital", "custodian", "mobile"],
+      "description": "Type of key storage medium"
+    },
+    "ScenarioOutcome": {
+      "type": "string",
+      "enum": ["recoverable", "at-risk", "locked"],
+      "description": "Outcome classification for a risk scenario"
+    },
+    "TrendDirection": {
+      "type": "string",
+      "enum": ["improving", "stable", "declining"],
+      "description": "Direction of KEEP score trend over time"
+    },
+    "DrillType": {
+      "type": "string",
+      "enum": ["recovery", "signing", "verification", "education"],
+      "description": "Type of custody drill"
+    },
+    "KEEPScoreComponents": {
+      "type": "object",
+      "description": "Individual pillar scores that compose the overall KEEP score",
+      "required": ["security", "redundancy", "liveness", "legal_readiness", "education"],
+      "additionalProperties": false,
+      "properties": {
+        "security": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Key storage quality, encryption, hardware wallet usage"
+        },
+        "redundancy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Geographic, device, and person distribution"
+        },
+        "liveness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Recent drills, active monitoring, check-in compliance"
+        },
+        "legal_readiness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Will/trust status, RUFADAA filing, legal documentation"
+        },
+        "education": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Heir training completion and knowledge transfer"
+        }
+      }
+    },
+    "KEEPScore": {
+      "type": "object",
+      "description": "Overall KEEP governance score with component breakdown and trend",
+      "required": ["value", "calculated_at", "components", "trend", "recommendations"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Overall KEEP score (0-100)"
+        },
+        "calculated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this score was last computed"
+        },
+        "components": {
+          "$ref": "#/$defs/KEEPScoreComponents"
+        },
+        "trend": {
+          "$ref": "#/$defs/TrendDirection"
+        },
+        "recommendations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Top improvement suggestions"
+        }
+      }
+    },
+    "ShardConfiguration": {
+      "type": "object",
+      "description": "Shamir's Secret Sharing configuration for a keyholder's shard",
+      "required": ["threshold", "total", "holders"],
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "k in k-of-m shard scheme"
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "m in k-of-m shard scheme"
+        },
+        "holders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of shard holders"
+        }
+      }
+    },
+    "KeyHolder": {
+      "type": "object",
+      "description": "An individual who holds a key or key shard in the custody structure",
+      "required": ["id", "role", "name", "jurisdiction", "storage_type", "location", "key_age_days", "is_sharded"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this keyholder"
+        },
+        "role": {
+          "$ref": "#/$defs/KeyRole"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the keyholder"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "description": "Legal jurisdiction of the keyholder"
+        },
+        "storage_type": {
+          "$ref": "#/$defs/StorageType"
+        },
+        "location": {
+          "type": "string",
+          "description": "Physical or logical location of the key"
+        },
+        "key_age_days": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Age of the key in days since creation"
+        },
+        "is_sharded": {
+          "type": "boolean",
+          "description": "Whether this key uses Shamir's Secret Sharing"
+        },
+        "shard_config": {
+          "$ref": "#/$defs/ShardConfiguration"
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "email": { "type": "string", "format": "email" },
+            "phone": { "type": "string" },
+            "address": { "type": "string" }
+          },
+          "description": "Contact information for this keyholder"
+        },
+        "last_verified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this keyholder's key was last verified accessible"
+        }
+      }
+    },
+    "Wallet": {
+      "type": "object",
+      "description": "A Bitcoin wallet under governance",
+      "required": ["id", "descriptor", "threshold", "total_keys", "created_at"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this wallet"
+        },
+        "descriptor": {
+          "type": "string",
+          "description": "Output descriptor (BIP380) for the wallet"
+        },
+        "threshold": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "M in M-of-N multisig"
+        },
+        "total_keys": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "N in M-of-N multisig"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this wallet was created"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the wallet"
+        },
+        "platform": {
+          "type": "string",
+          "description": "Custody platform (e.g. Theya, Casa, Unchained, Nunchuk)"
+        },
+        "balance_sats": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Wallet balance in satoshis"
+        }
+      }
+    },
+    "GovernanceRule": {
+      "type": "object",
+      "description": "A rule governing custody operations (who can do what, when, under what conditions)",
+      "required": ["id", "who", "canDo", "when", "condition", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this rule"
+        },
+        "who": {
+          "type": "string",
+          "description": "The actor or role this rule applies to"
+        },
+        "canDo": {
+          "type": "string",
+          "description": "The action permitted by this rule"
+        },
+        "when": {
+          "type": "string",
+          "description": "Temporal condition for rule activation"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Prerequisite condition for the action"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "paused", "pending"],
+          "description": "Current status of this governance rule"
+        },
+        "risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Risk level associated with this rule"
+        },
+        "lastExecuted": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this rule was last invoked"
+        },
+        "executions": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of times this rule has been executed"
+        }
+      }
+    },
+    "RedundancyMetrics": {
+      "type": "object",
+      "description": "Metrics tracking the 3-3-3 rule: 3 devices, 3 locations, 3 people",
+      "required": ["device_count", "location_count", "person_count", "geographic_distribution", "passes_3_3_3_rule"],
+      "additionalProperties": false,
+      "properties": {
+        "device_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of distinct devices holding keys"
+        },
+        "location_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of distinct physical locations"
+        },
+        "person_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of distinct people with key access"
+        },
+        "geographic_distribution": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of geographic regions where keys are stored"
+        },
+        "passes_3_3_3_rule": {
+          "type": "boolean",
+          "description": "Whether the setup meets the minimum 3-3-3 redundancy standard"
+        }
+      }
+    },
+    "Heir": {
+      "type": "object",
+      "description": "A designated heir in the estate plan",
+      "required": ["id", "name", "relationship"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this heir"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the heir"
+        },
+        "relationship": {
+          "type": "string",
+          "description": "Relationship to the primary keyholder (e.g. spouse, child, trust)"
+        },
+        "allocation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of inheritance allocated to this heir"
+        },
+        "isKeyHolder": {
+          "type": "boolean",
+          "description": "Whether this heir also serves as a keyholder"
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "email": { "type": "string", "format": "email" },
+            "phone": { "type": "string" }
+          },
+          "description": "Contact information for this heir"
+        }
+      }
+    },
+    "Charter": {
+      "type": "object",
+      "description": "Family Bitcoin charter defining mission, principles, and review cadence",
+      "required": ["mission", "principles", "reviewFrequency"],
+      "additionalProperties": false,
+      "properties": {
+        "mission": {
+          "type": "string",
+          "description": "The family's Bitcoin custody mission statement"
+        },
+        "principles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Core principles guiding custody decisions"
+        },
+        "reviewFrequency": {
+          "type": "string",
+          "enum": ["quarterly", "annual"],
+          "description": "How often the charter is reviewed"
+        },
+        "lastReviewed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the charter was last reviewed"
+        }
+      }
+    },
+    "LegalDocuments": {
+      "type": "object",
+      "description": "Legal document status and attorney contact for estate integration",
+      "required": ["has_will", "has_trust", "has_letter_of_instruction", "last_review", "next_review"],
+      "additionalProperties": false,
+      "properties": {
+        "has_will": {
+          "type": "boolean",
+          "description": "Whether a will exists that addresses Bitcoin custody"
+        },
+        "has_trust": {
+          "type": "boolean",
+          "description": "Whether a trust exists for Bitcoin holdings"
+        },
+        "has_letter_of_instruction": {
+          "type": "boolean",
+          "description": "Whether a letter of instruction exists for heirs"
+        },
+        "trust_name": {
+          "type": "string",
+          "description": "Name of the trust (if has_trust is true)"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "description": "Legal jurisdiction for the trust/estate"
+        },
+        "bitcoin_in_docs": {
+          "type": "boolean",
+          "description": "Whether Bitcoin is explicitly referenced in legal documents"
+        },
+        "rufadaa_filed": {
+          "type": "boolean",
+          "description": "Whether RUFADAA (Revised Uniform Fiduciary Access to Digital Assets Act) authorization is filed"
+        },
+        "trustee_names": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Names of designated trustees"
+        },
+        "last_review": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When legal documents were last reviewed"
+        },
+        "next_review": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the next legal review is scheduled"
+        },
+        "attorney_contact": {
+          "type": "object",
+          "required": ["name", "firm", "phone", "email"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string" },
+            "firm": { "type": "string" },
+            "phone": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          },
+          "description": "Primary attorney contact for estate matters"
+        }
+      }
+    },
+    "Drill": {
+      "type": "object",
+      "description": "A custody drill record (recovery, signing, verification, or education)",
+      "required": ["id", "timestamp", "type", "participants", "success"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this drill"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the drill was conducted"
+        },
+        "type": {
+          "$ref": "#/$defs/DrillType"
+        },
+        "participants": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Names or IDs of drill participants"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Whether the drill was completed successfully"
+        },
+        "duration_minutes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Duration of the drill in minutes"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form notes about the drill"
+        },
+        "issues_found": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Issues discovered during the drill"
+        }
+      }
+    },
+    "ContinuityConfig": {
+      "type": "object",
+      "description": "Configuration for check-in cadence, drill scheduling, and life event triggers",
+      "required": ["checkin_frequency", "drill_frequency"],
+      "additionalProperties": false,
+      "properties": {
+        "checkin_frequency": {
+          "type": "string",
+          "enum": ["monthly", "quarterly", "annual"],
+          "description": "How often check-ins should occur"
+        },
+        "drill_frequency": {
+          "type": "string",
+          "enum": ["monthly", "quarterly", "annual"],
+          "description": "How often drills should be conducted"
+        },
+        "last_checkin": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the last check-in occurred"
+        },
+        "next_checkin_due": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the next check-in is due"
+        },
+        "last_drill": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the last drill occurred"
+        },
+        "next_drill_due": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the next drill is due"
+        },
+        "life_event_triggers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Life events that should trigger a custody review (e.g. marriage, birth, death)"
+        },
+        "notification_days": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Days before due date to send reminders"
+        }
+      }
+    },
+    "KeyRotation": {
+      "type": "object",
+      "description": "Record of a key rotation event",
+      "required": ["id", "timestamp", "keys_rotated", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this rotation"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the rotation occurred"
+        },
+        "keys_rotated": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of keys that were rotated"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for the rotation"
+        },
+        "new_descriptor": {
+          "type": "string",
+          "description": "New output descriptor after rotation (if applicable)"
+        }
+      }
+    },
+    "ProfessionalContact": {
+      "type": "object",
+      "description": "Contact information for a professional advisor",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the professional"
+        },
+        "firm": {
+          "type": "string",
+          "description": "Firm or company name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number"
+        }
+      }
+    },
+    "ProfessionalNetwork": {
+      "type": "object",
+      "description": "Network of professional contacts supporting the custody structure",
+      "additionalProperties": false,
+      "properties": {
+        "advisor": {
+          "$ref": "#/$defs/ProfessionalContact"
+        },
+        "attorney": {
+          "$ref": "#/$defs/ProfessionalContact"
+        },
+        "cpa": {
+          "$ref": "#/$defs/ProfessionalContact"
+        }
+      }
+    },
+    "EducationStatus": {
+      "type": "object",
+      "description": "Tracks heir education and training progress",
+      "required": ["heirs_trained", "last_training", "next_review", "trained_heirs"],
+      "additionalProperties": false,
+      "properties": {
+        "heirs_trained": {
+          "type": "boolean",
+          "description": "Whether any heirs have completed training"
+        },
+        "last_training": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the last training session occurred"
+        },
+        "next_review": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the next training review is scheduled"
+        },
+        "training_materials_location": {
+          "type": "string",
+          "description": "Where training materials are stored"
+        },
+        "trained_heirs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Names or IDs of heirs who have completed training"
+        }
+      }
+    },
+    "ThapIntegrity": {
+      "type": "object",
+      "description": "Trust Hash Amendment Protocol — SHA-256 of canonical fields for drift detection",
+      "required": ["current_hash", "history"],
+      "additionalProperties": false,
+      "properties": {
+        "current_hash": {
+          "type": "string",
+          "description": "Current SHA-256 hash of canonical fields"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["hash", "timestamp"],
+            "additionalProperties": false,
+            "properties": {
+              "hash": {
+                "type": "string",
+                "description": "SHA-256 hash at this point in time"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this hash was recorded"
+              },
+              "note": {
+                "type": "string",
+                "description": "Optional note describing what changed"
+              }
+            }
+          },
+          "description": "History of THAP hashes for tracking changes over time"
+        }
+      }
+    },
+    "EventLogEntry": {
+      "type": "object",
+      "description": "An entry in the append-only, hash-chained audit trail",
+      "required": ["id", "timestamp", "event_type", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this event"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this event occurred"
+        },
+        "event_type": {
+          "type": "string",
+          "description": "Category of event (e.g. file_created, vault_configured, drill_completed)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the event"
+        },
+        "actor": {
+          "type": "string",
+          "description": "Who performed the action"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Additional structured data about the event"
+        },
+        "hash": {
+          "type": "string",
+          "description": "Hash of the previous entry for tamper evidence (hash chain)"
+        }
+      }
+    },
+    "ScenarioResult": {
+      "type": "object",
+      "description": "Result of a single risk scenario simulation",
+      "required": ["scenario_id", "scenario_name", "outcome", "available_keys", "required_keys"],
+      "additionalProperties": false,
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "description": "Unique identifier for the scenario"
+        },
+        "scenario_name": {
+          "type": "string",
+          "description": "Human-readable name of the scenario"
+        },
+        "outcome": {
+          "$ref": "#/$defs/ScenarioOutcome"
+        },
+        "available_keys": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of keys available in this scenario"
+        },
+        "required_keys": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of keys required to sign"
+        },
+        "recovery_path": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Steps to recover in this scenario"
+        },
+        "mitigation": {
+          "type": "string",
+          "description": "Recommended mitigation for this risk"
+        }
+      }
+    },
+    "RiskAnalysis": {
+      "type": "object",
+      "description": "Computed risk analysis with scenario simulation results",
+      "required": ["last_run", "scenarios_tested", "probability_of_recovery", "critical_risks", "mitigation_applied", "scenario_results"],
+      "additionalProperties": false,
+      "properties": {
+        "last_run": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the risk analysis was last computed"
+        },
+        "scenarios_tested": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of scenarios tested"
+        },
+        "monte_carlo_iterations": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of Monte Carlo iterations (if applicable)"
+        },
+        "probability_of_recovery": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Overall probability of successful recovery (0.0 to 1.0)"
+        },
+        "critical_risks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of critical risks identified"
+        },
+        "mitigation_applied": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Mitigations currently in place"
+        },
+        "scenario_results": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ScenarioResult" },
+          "description": "Detailed results for each scenario tested"
+        }
+      }
+    }
+  }
+}
