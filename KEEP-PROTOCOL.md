@@ -204,13 +204,25 @@ The version field uses semantic versioning. The current version is `2.0.0`. Impl
 
 ## 5. THAP -- Trust Hash Amendment Protocol
 
-THAP provides a lightweight mechanism for detecting when a custody arrangement has changed since it was last reviewed. It does not prevent changes -- it detects them.
+THAP is a cryptographic amendment protocol that connects a `.keep` governance file to a legal trust instrument. It allows custody governance to evolve -- keyholders added, rules updated, keys rotated -- without requiring a formal trust amendment for every operational change. The trust references the `.keep` file by its THAP hash; the hash chain proves lineage from the trust-anchored state to the current state.
 
-### 5.1 Canonical Fields
+For the full standalone specification, see [THAP.md](./THAP.md).
 
-The THAP hash is computed over a specific subset of fields from the `.keep` file. These fields represent the structural elements of the custody arrangement that, if changed, indicate the arrangement has been modified and should be reviewed.
+### 5.1 The Problem THAP Solves
 
-The canonical object is constructed as follows:
+Trust documents are static. Bitcoin custody is dynamic. Every time you rotate a key, add a keyholder, or update a governance rule, the trust document becomes stale. Formally amending a trust costs $500-2,000+ per amendment, takes weeks, and creates friction that discourages good governance hygiene. The result: families either stop updating their trust (dangerous) or stop updating their custody setup (also dangerous). THAP eliminates this friction by letting the trust reference a hash, not a static document.
+
+### 5.2 The Trust-Hash Anchor
+
+When a trust is executed, it references the `.keep` file by its THAP hash -- the **anchor hash**. This is the cryptographic fingerprint of the governance state at the moment the trust became legally binding. Example trust language:
+
+> *"The Grantor's Bitcoin custody operations shall be governed in accordance with the KEEP governance file, initially identified by SHA-256 hash [anchor_hash], as maintained and amended per the Trust Hash Amendment Protocol (THAP). Amendments to custody governance documented via THAP shall not require formal trust amendment, provided the hash chain maintains unbroken lineage from the anchor hash."*
+
+As governance evolves, the hash chain proves that the current state is a legitimate evolution of the trust-anchored state -- without requiring the attorney to re-draft the trust.
+
+### 5.3 Canonical Fields
+
+The THAP hash is computed over the **structural governance decisions** in the `.keep` file -- the fields a trust would care about:
 
 ```json
 {
@@ -232,9 +244,9 @@ The canonical object is constructed as follows:
 }
 ```
 
-Fields not in this list (e.g., `event_log`, `drills`, `keep_score`, `risk_analysis`, timestamps, contact details) are excluded because they represent activity data rather than structural configuration.
+Activity data (`event_log`, `drills`, `keep_score`, `risk_analysis`, timestamps, contact details) is excluded -- these represent operational history, not governance structure.
 
-### 5.2 Hash Computation
+### 5.4 Hash Computation
 
 1. Construct the canonical object from the current `.keep` file state.
 2. Serialize to JSON using `JSON.stringify` (default serialization, no custom replacer).
@@ -244,18 +256,37 @@ Fields not in this list (e.g., `event_log`, `drills`, `keep_score`, `risk_analys
 
 The result is a 64-character hex string.
 
-### 5.3 History Tracking
+### 5.5 History Chain
 
 The `thap` object in the `.keep` file contains:
 
 - `current_hash` -- the most recently computed THAP hash.
 - `history` -- an append-only array of `{ hash, timestamp, note? }` entries.
 
-Each time the THAP hash is recomputed and differs from `current_hash`, the old hash is appended to the history array with a timestamp and optional note describing the change. This provides a lightweight change detection trail without storing full diffs.
+Each time governance changes and the THAP hash is recomputed, the old hash is appended to the history array with a timestamp and a note describing what changed. The chain is ordered chronologically -- an attorney can trace from the trust's anchor hash forward through every governance change to the current state.
 
-### 5.4 Drift Detection
+### 5.6 Attorney Verification
 
-An implementation SHOULD recompute the THAP hash on file load and compare it to `current_hash`. If they differ, the file has been modified outside the current application (or by a process that did not update the hash). The implementation SHOULD surface this as a warning to the user, not as a blocking error.
+1. Attorney receives the current `.keep` file (via role-scoped export).
+2. Attorney computes the THAP hash of the current file.
+3. Attorney verifies that `current_hash` matches their independent computation.
+4. Attorney walks the history chain back to the anchor hash referenced in the trust.
+5. If the chain is unbroken, the current governance state is a verified evolution of the trust-anchored state.
+
+### 5.7 When You Still Need a Trust Amendment
+
+THAP does not eliminate trust amendments entirely. Formal amendments are still required for:
+
+- Adding or removing **beneficiaries** (heirs)
+- Changing **trustees**
+- **Jurisdictional** changes
+- Material changes to **distribution rules**
+
+THAP handles the operational governance changes (key rotations, keyholder updates, policy adjustments) that would otherwise require expensive, friction-heavy amendments.
+
+### 5.8 Drift Detection
+
+As a secondary benefit, THAP detects when the `.keep` file has been modified outside the application. On file load, implementations SHOULD recompute the hash and compare it to `current_hash`. A mismatch indicates the file was modified by a process that did not update the hash -- this SHOULD be surfaced as a warning, not a blocking error.
 
 ---
 
