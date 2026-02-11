@@ -455,7 +455,7 @@ The key differentiator: existing solutions address a single pillar (Key manageme
 
 ### 10.1 Reference Implementation
 
-The reference implementation is **Keep Nexus**, a Next.js 14 application written in TypeScript. It provides a browser-based editor for `.keep` files with the terminal-style aesthetic common to Bitcoin tooling. The source code is organized as follows:
+The reference implementation is **[Keep Nexus](https://selfcustodyos.com)**, a Next.js 14 application written in TypeScript. It provides a browser-based editor for `.keep` files with the terminal-style aesthetic common to Bitcoin tooling. All operations run client-side with zero server dependency. Request access at [selfcustodyos.com](https://selfcustodyos.com). The source code is organized as follows:
 
 - `lib/keep-core/data-model.ts` -- Canonical TypeScript type definitions for all interfaces
 - `lib/keep-core/little-shard.ts` -- File creation, validation, import/export, encryption, migration
