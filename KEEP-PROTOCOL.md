@@ -1,6 +1,6 @@
 # KEEP Protocol Specification
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Status:** Draft
 **Authors:** Bitcoin Command
 **Created:** 2026-02-10
@@ -81,19 +81,46 @@ P -- Professional Stewardship
 
 ### 3.1 K -- Key Governance
 
-Key Governance documents the technical custody structure and the human policies that govern it.
+Key Governance documents the technical custody structure and the human policies that govern it. For the full standalone specification covering functional roles, wallet tiers, threshold rules, and signing scenarios, see [KEY-GOVERNANCE.md](./KEY-GOVERNANCE.md).
 
-**Wallets.** Each wallet entry records the multisig quorum (M-of-N threshold), total key count, output descriptor (per BIP-380), hosting platform (if any), creation date, and optional label.
+**Wallets.** Each wallet entry records the multisig quorum (M-of-N threshold), total key count, output descriptor (per BIP-380), hosting platform (if any), creation date, and optional label. Wallets may also specify a **tier** (`warm` or `cold`) indicating their security posture -- see below.
 
-**Keyholders.** Each keyholder entry records the individual's name, role (primary holder, spouse, child, attorney, custodian, friend, or other), storage type (hardware wallet, paper, vault, digital, custodian, or mobile), physical location of the key, jurisdiction, age of the key in days, and whether the key is further sharded via Shamir secret sharing. If sharded, a nested shard configuration records the k-of-m threshold and the identities of shard holders.
+**Keyholders.** Each keyholder entry records the individual's name, role (primary holder, spouse, child, attorney, custodian, friend, or other), storage type (hardware wallet, paper, vault, digital, custodian, or mobile), physical location of the key, jurisdiction, age of the key in days, and whether the key is further sharded via Shamir secret sharing. If sharded, a nested shard configuration records the k-of-m threshold and the identities of shard holders. Keyholders may also specify a **functional role** (`owner`, `signer`, or `protector`) indicating their operational capability -- see below.
+
+#### 3.1.1 Functional Roles
+
+Beyond the relationship-based `role` field (primary, spouse, attorney, etc.), each keyholder may declare a `functional_role` describing their operational capability:
+
+- **Owner** -- Can initiate transactions and co-sign. Drives day-to-day custody operations.
+- **Signer** -- Can co-sign when asked but does not initiate transactions. Participates in normal operations.
+- **Protector** -- Signs only during emergency or recovery scenarios. Provides the safety net.
+
+The functional role is independent of the relationship role. An attorney (`role: "attorney"`) is typically a protector (`functional_role: "protector"`), but could be a signer if they actively co-sign normal transactions.
+
+#### 3.1.2 Tiered Wallets
+
+Each wallet may declare a `tier` describing its security posture:
+
+- **Warm** -- Operational wallet where an owner can meet the signing threshold alone or with minimal co-signing. Prioritizes accessibility.
+- **Cold** -- Long-term storage vault requiring coordination among multiple independent parties. Prioritizes security.
+
+#### 3.1.3 Threshold Rules
+
+For normal operations, the number of owners plus signers should meet or exceed the wallet threshold:
+
+```
+owners_count + signers_count >= wallet.threshold
+```
+
+**Cold vault hard rule:** For cold-tier wallets, no single person should hold enough keys to unilaterally meet the signing threshold. This is a governance recommendation -- implementations SHOULD surface a warning, not an error.
 
 **Governance Rules.** Rules are expressed as structured policy statements: *who* can do *what*, *when*, under *what condition*. Each rule has an explicit status (active, paused, or pending), an optional risk level, and execution tracking (last executed timestamp, execution count). Examples:
 
 | who | canDo | when | condition |
 |-----|-------|------|-----------|
-| Spouse | co-sign transactions | anytime | primary holder approval |
-| Attorney | initiate recovery | death or incapacity | death certificate + 2 witnesses |
-| Trustee | distribute to heirs | after probate | court order or trust terms |
+| Owner | co-sign transactions | anytime | within spending policy |
+| Signer | co-sign large transactions | with 48-hour cooling period | Owner approval + notification |
+| Protector | initiate recovery | death or incapacity | death certificate + 2 witnesses |
 
 **Redundancy Metrics.** The 3-3-3 rule provides a minimum threshold for custody resilience: at least 3 signing devices, stored across at least 3 geographic locations, controlled by at least 3 distinct people. The redundancy object tracks device count, location count, person count, geographic distribution, and whether the 3-3-3 rule is satisfied.
 
@@ -143,7 +170,7 @@ The `.keep` file follows three core principles drawn from Bitcoin's own design p
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `version` | string | yes | Semantic version, currently `"2.0.0"` |
+| `version` | string | yes | Semantic version, currently `"2.1.0"` |
 | `created_at` | string (ISO 8601) | yes | File creation timestamp |
 | `last_modified` | string (ISO 8601) | yes | Last modification timestamp |
 | `file_hash` | string | no | SHA-256 hash for file integrity |
@@ -619,11 +646,13 @@ wallets[].label
 wallets[].threshold
 wallets[].total_keys
 wallets[].platform
+wallets[].tier
 keyholders[].id
 keyholders[].name
 keyholders[].role
 keyholders[].storage_type
 keyholders[].location
+keyholders[].functional_role
 heirs[].id
 heirs[].name
 heirs[].relationship

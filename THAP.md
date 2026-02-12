@@ -53,6 +53,7 @@ The canonical object includes:
   - `threshold` — required signatures
   - `total_keys` — total keys in multisig
   - `platform` — wallet software/hardware type
+  - `tier` — wallet security posture: warm or cold (optional, included when present)
 
 **Key Holders:**
 - `keyholders[]` — individuals with key custody
@@ -61,6 +62,7 @@ The canonical object includes:
   - `role` — family role (parent, heir, advisor)
   - `storage_type` — hardware/paper/metal
   - `location` — custody location (not address)
+  - `functional_role` — operational capability: owner, signer, or protector (optional, included when present)
 
 **Beneficiaries:**
 - `heirs[]` — inheritance distribution

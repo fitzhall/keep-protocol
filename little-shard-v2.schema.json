@@ -138,6 +138,16 @@
       "enum": ["recoverable", "at-risk", "locked"],
       "description": "Outcome classification for a risk scenario"
     },
+    "FunctionalRole": {
+      "type": "string",
+      "enum": ["owner", "signer", "protector"],
+      "description": "Operational capability of a keyholder: owner (initiate + sign), signer (sign only, normal ops), protector (sign only, emergency/recovery)"
+    },
+    "WalletTier": {
+      "type": "string",
+      "enum": ["warm", "cold"],
+      "description": "Security posture of a wallet: warm (owner can sign alone) or cold (distributed signing required)"
+    },
     "TrendDirection": {
       "type": "string",
       "enum": ["improving", "stable", "declining"],
@@ -293,6 +303,9 @@
           "type": "string",
           "format": "date-time",
           "description": "When this keyholder's key was last verified accessible"
+        },
+        "functional_role": {
+          "$ref": "#/$defs/FunctionalRole"
         }
       }
     },
@@ -337,6 +350,9 @@
           "type": "integer",
           "minimum": 0,
           "description": "Wallet balance in satoshis"
+        },
+        "tier": {
+          "$ref": "#/$defs/WalletTier"
         }
       }
     },

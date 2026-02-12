@@ -11,7 +11,8 @@
       "total_keys": 1,
       "created_at": "2026-01-15T08:30:00.000Z",
       "label": "Cold Storage",
-      "platform": "Coldcard"
+      "platform": "Coldcard",
+      "tier": "warm"
     }
   ],
   "keyholders": [
@@ -23,7 +24,8 @@
       "storage_type": "hardware-wallet",
       "location": "Home safe",
       "key_age_days": 26,
-      "is_sharded": false
+      "is_sharded": false,
+      "functional_role": "owner"
     }
   ],
   "governance_rules": [],

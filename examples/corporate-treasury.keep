@@ -13,7 +13,8 @@
       "created_at": "2024-06-01T10:00:00Z",
       "label": "Operating Fund",
       "platform": "Unchained",
-      "balance_sats": 150000000
+      "balance_sats": 150000000,
+      "tier": "warm"
     },
     {
       "id": "wallet-strategic",
@@ -23,7 +24,8 @@
       "created_at": "2024-06-15T14:30:00Z",
       "label": "Strategic Reserve",
       "platform": "Nunchuk",
-      "balance_sats": 2500000000
+      "balance_sats": 2500000000,
+      "tier": "cold"
     }
   ],
   "keyholders": [
@@ -40,7 +42,8 @@
         "email": "spark@meridiantech.example",
         "phone": "+1-512-555-0101"
       },
-      "last_verified": "2026-01-15T10:00:00Z"
+      "last_verified": "2026-01-15T10:00:00Z",
+      "functional_role": "owner"
     },
     {
       "id": "kh-james-liu",
@@ -55,7 +58,8 @@
         "email": "jliu@meridiantech.example",
         "phone": "+1-512-555-0102"
       },
-      "last_verified": "2026-01-15T10:00:00Z"
+      "last_verified": "2026-01-15T10:00:00Z",
+      "functional_role": "owner"
     },
     {
       "id": "kh-elena-vasquez",
@@ -70,7 +74,8 @@
         "email": "evasquez@meridiantech.example",
         "phone": "+1-212-555-0201"
       },
-      "last_verified": "2026-01-20T11:30:00Z"
+      "last_verified": "2026-01-20T11:30:00Z",
+      "functional_role": "protector"
     },
     {
       "id": "kh-anchorage",
@@ -85,7 +90,8 @@
         "email": "custody@anchorage.example",
         "phone": "+1-302-555-0301"
       },
-      "last_verified": "2026-02-01T09:00:00Z"
+      "last_verified": "2026-02-01T09:00:00Z",
+      "functional_role": "protector"
     },
     {
       "id": "kh-michael-torres",
@@ -100,7 +106,8 @@
         "email": "mtorres@torreslaw.example",
         "phone": "+1-214-555-0401"
       },
-      "last_verified": "2026-01-10T15:00:00Z"
+      "last_verified": "2026-01-10T15:00:00Z",
+      "functional_role": "protector"
     }
   ],
   "governance_rules": [

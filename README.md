@@ -6,6 +6,7 @@ KEEP (Key governance, Estate integration, Ensured continuity, Professional stewa
 
 - [Whitepaper](./KEEP-PROTOCOL.md) -- Full protocol specification
 - [JSON Schema](./little-shard-v2.schema.json) -- Machine-readable schema (JSON Schema draft-07)
+- [Key Governance](./KEY-GOVERNANCE.md) -- Functional roles and tiered wallet model
 - [THAP](./THAP.md) -- Trust Hash Amendment Protocol (connecting .keep files to legal trusts)
 - [Threat Model](./THREAT-MODEL.md) -- What KEEP protects against and its limitations
 
